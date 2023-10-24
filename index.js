@@ -61,13 +61,20 @@ app.post("/login", async (req, res) => {
   }
 });
 
-app.get('/profile', (req,res) => {
-    const {token} = req.cookies;
-    jwt.verify(token, secret, {}, (err,info) => {
-      if (err) throw err;
+
+app.get('/profile', (req, res) => {
+  const { token } = req.cookies;
+  jwt.verify(token, secret, {}, (err, info) => {
+    if (err) {
+      res.status(401).json({ error: 'Unauthorized' });
+    } else {
+      // At this point, `info` contains the user data decoded from the JWT.
       res.json(info);
-    });
+    }
   });
+});
+
+
 
 app.post("/logout", (req, res) => {
   res.cookie("token", "").json("ok");
