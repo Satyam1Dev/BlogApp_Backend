@@ -64,17 +64,17 @@ app.post("/login", async (req, res) => {
 
 app.get('/profile', (req, res) => {
   const { token } = req.cookies;
+  console.log('Received token:', token);
   jwt.verify(token, secret, {}, (err, info) => {
     if (err) {
+      console.error('JWT verification error:', err);
       res.status(401).json({ error: 'Unauthorized' });
     } else {
-      // At this point, `info` contains the user data decoded from the JWT.
+      console.log('Decoded user info:', info);
       res.json(info);
     }
   });
 });
-
-
 
 app.post("/logout", (req, res) => {
   res.cookie("token", "").json("ok");
