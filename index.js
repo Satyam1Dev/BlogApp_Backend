@@ -17,7 +17,22 @@ const port = process.env.PORT || 8080; // you can use any port number here; i ch
 const app = express();
 app.use(cookieParser());
 app.use("/uploads", express.static(__dirname + "/uploads"));
-app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
+
+const allowedOrigins = ['http://localhost:3000', 'https://heroic-blancmange-a8513c.netlify.app'];
+
+app.use(
+  cors({
+    credentials: true,
+    origin: (origin, callback) => {
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+  })
+);
+
 
 app.use(express.urlencoded({ extended: true }));
 
