@@ -7,22 +7,25 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 const salt = bcrypt.genSaltSync(10);
+const secret = "asdfe45we45w345wegw345werjktjwertkj";
 const multer = require('multer');
 const uploadMiddleware = multer({ dest: 'uploads/' });
 
 const fs = require("fs");
-const dotenv = require('dotenv'); // Add this line
-dotenv.config(); // Load environment variables from .env file
+const port = process.env.PORT || 8080; // you can use any port number here; i chose to use 3001
+
 const app = express();
 app.use(cookieParser());
 app.use("/uploads", express.static(__dirname + "/uploads"));
 app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
+
 app.use(express.urlencoded({ extended: true }));
+
 app.use(express.json());
-const port = process.env.PORT || 8080; // you can use any port number here; i chose to use 3001
-const secret = process.env.SECRET_KEY; // Get the secret key from environment variables
-const mongodbUri = process.env.MONGODB_URI; // Get the MongoDB URI from environment variables
-mongoose.connect(mongodbUri);
+
+mongoose.connect(
+  "mongodb+srv://SATYA_PRAKASH:SATYA_PRAKASH@cluster0.pceyq7j.mongodb.net/Blog(MERN)"
+);
 
 app.post("/register", async (req, res) => {
   const { username, password } = req.body;
@@ -143,6 +146,6 @@ app.get("/post/:id", async (req, res) => {
   res.json({ postDoc });
 });
 
-app.listen(port, () => {
+app.listen(8080, () => {
   console.log("server started on port  8080");
 });
